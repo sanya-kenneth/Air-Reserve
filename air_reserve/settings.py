@@ -40,9 +40,11 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
+    'air_reserve.apps.core',
     'air_reserve.apps.authentication',
     'air_reserve.apps.flights',
-    'air_reserve.apps.bookings'
+    'air_reserve.apps.bookings',
+    
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,7 @@ STATIC_URL = '/static/'
 # the `authentication` module. This module is registered above in a setting
 # called `INSTALLED_APPS`.
 AUTH_USER_MODEL = 'authentication.User'
+
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'air_reserve.apps.core.exceptions.core_exception_handler'
+}

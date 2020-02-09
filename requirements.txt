@@ -16,6 +16,7 @@ phonenumbers==8.11.3
 pluggy==0.13.1
 psycopg2==2.8.4
 py==1.8.1
+py3dns==3.2.1
 pycodestyle==2.5.0
 pyparsing==2.4.6
 pytest==5.3.5

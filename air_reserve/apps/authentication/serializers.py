@@ -1,8 +1,9 @@
-from .models import User
 import re
 from rest_framework import serializers
 from validate_email import validate_email as \
     validate_user_email
+from .models import User
+from .validators import check_user_exists
 
 
 class BaseSignupSerializer(serializers.ModelSerializer):
@@ -32,13 +33,14 @@ class BaseSignupSerializer(serializers.ModelSerializer):
         }
     )
     email = serializers.EmailField(
+        validators=[check_user_exists],
         required=True,
         error_messages={
             "required": "email field is required",
             "blank": "email field cannot be left blank",
         }
     )
-    phone_number = CharField()
+    phone_number = serializers.CharField()
     password = serializers.CharField(
         max_length=18,
         min_length=8,
@@ -80,8 +82,9 @@ class BaseSignupSerializer(serializers.ModelSerializer):
         return validate_name(last_name)
 
     def validate_email(self, email):
-        """ validates email"""
-        isvalid_email = validate_user_email(email, verify=True)
+        """ validates the user's email"""
+        isvalid_email = validate_user_email(email)
+        print(isvalid_email)
         email_exists = User.objects.filter(email=email)
         if not isvalid_email:
             raise serializers.ValidationError(
