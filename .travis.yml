@@ -8,10 +8,14 @@ services:
 install:
   - pip install -r requirements.txt
 
+before_script:
+  - psql -c 'create database test_air_reserve;' -U postgres
+  - psql -c "ALTER USER postgres CREATEDB;"
+
 script:
   - python manage.py makemigrations
   - python manage.py migrate
-  - coverage run --source='air_reserve/apps' manage.py test && coverage report
+  - coverage run --source='air_reserve/apps/' manage.py test && coverage report
 
 after_success:
   - coveralls
