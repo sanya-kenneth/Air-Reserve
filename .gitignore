@@ -1,2 +1,13 @@
 venv/
 .vscode/
+air_reserve/__pycache__/
+air_reserve/apps/__pycache__/
+air_reserve/apps/authentication/__pycache__/
+air_reserve/apps/helpers/__pycache__/
+air_reserve/apps/core/__pycache__/
+air_reserve/apps/flights/__pycache__/
+air_reserve/apps/bookings/__pycache__/
+air_reserve/apps/authentication/migrations/__pycache__/
+air_reserve/apps/flights/migrations/__pycache__/
+air_reserve/apps/bookings/migrations/__pycache__/
+.env

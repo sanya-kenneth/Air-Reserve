@@ -14,8 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
+prefixed_url = 'api/v1/'
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(prefixed_url + 'admin/', admin.site.urls),
+    path(prefixed_url, include('air_reserve.apps.authentication.urls'))
 ]
