@@ -1,5 +1,7 @@
 import re
+from django.contrib.auth import authenticate
 from rest_framework import serializers
+from django.contrib.auth.hashers import check_password
 from validate_email import validate_email as \
     validate_user_email
 from .models import User
@@ -42,7 +44,7 @@ class BaseSignupSerializer(serializers.ModelSerializer):
     )
     phone_number = serializers.CharField()
     password = serializers.CharField(
-        max_length=18,
+        max_length=120,
         min_length=8,
         write_only=True,
         required=True,
@@ -84,7 +86,6 @@ class BaseSignupSerializer(serializers.ModelSerializer):
     def validate_email(self, email):
         """ validates the user's email"""
         isvalid_email = validate_user_email(email)
-        print(isvalid_email)
         email_exists = User.objects.filter(email=email)
         if not isvalid_email:
             raise serializers.ValidationError(
@@ -101,9 +102,7 @@ class SignupUserSerializer(BaseSignupSerializer):
 
     class Meta:
         model = User
-        # List all of the fields that could possibly be
-        # included in a request or response, including fields
-        # specified explicitly above.
+
         fields = ['email', 'first_name', 'last_name', 'phone_number',
                   'password']
 
@@ -117,12 +116,30 @@ class SignupAdminSerializer(BaseSignupSerializer):
 
     class Meta:
         model = User
-        # List all of the fields that could possibly be
-        # included in a request or response, including fields
-        # specified explicitly above.
+
         fields = ['email', 'first_name', 'last_name', 'phone_number',
                   'password']
 
     def create(self, validated_data):
         # Use the `create_superuser` method to create a new admin/superuser.
         return User.objects.create_superuser(**validated_data)
+
+
+class LoginSerializer(serializers.Serializer):
+    """
+    Serializer class for logging in users
+    """
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(required=True, max_length=128,
+                                     write_only=True)
+
+    def validate(self, data):
+        data = dict(data)
+        user = authenticate(email=data['email'], password=data['password'])
+        if user is None:
+            raise serializers.ValidationError(
+                'user email or password is incorrect'
+            )
+        return {
+            'email': user.email
+        }

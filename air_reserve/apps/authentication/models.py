@@ -1,4 +1,6 @@
+import jwt
 import datetime
+from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 from django.db import models
@@ -65,3 +67,20 @@ class User(AbstractBaseUser, PermissionsMixin):
         This string is used when a `User` is printed in the console.
         """
         return self.email
+    
+    
+    @staticmethod
+    def encode_auth_token(email):
+        """Generates auth token."""
+        try:
+            payload = {
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(
+                    days=30),
+                'iat': datetime.datetime.utcnow(),
+                'sub': email
+            }
+            return jwt.encode(
+                payload, settings.SECRET_KEY, algorithm='HS256'
+            )
+        except Exception as e:
+            return e

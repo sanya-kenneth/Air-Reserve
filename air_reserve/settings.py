@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'air_reserve.apps.authentication',
     'air_reserve.apps.flights',
     'air_reserve.apps.bookings',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -138,5 +138,10 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'authentication.User'
 
 REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'air_reserve.apps.core.exceptions.core_exception_handler'
+    'EXCEPTION_HANDLER': 'air_reserve.apps.core.exceptions.core_exception_handler',
+    'NON_FIELD_ERRORS_KEY': 'error',
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'air_reserve.apps.authentication.backends.JWTAuthentication',
+    )
 }
