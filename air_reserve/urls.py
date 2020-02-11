@@ -19,5 +19,6 @@ from django.urls import path, include
 prefixed_url = 'api/v1/'
 urlpatterns = [
     path(prefixed_url + 'admin/', admin.site.urls),
-    path(prefixed_url, include('air_reserve.apps.authentication.urls'))
+    path(prefixed_url, include('air_reserve.apps.authentication.urls')),
+    path(prefixed_url, include('air_reserve.apps.flights.urls'))
 ]

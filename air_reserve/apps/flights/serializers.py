@@ -1,12 +1,10 @@
 from rest_framework import serializers
 from .models import Flights
-from .validators import validate_field_type
 
 
 class FlightsSerializer(serializers.ModelSerializer):
     """Serializer class for Flights """
     departing_from = serializers.CharField(
-        validators=[validate_field_type('string')],
         required=True,
         error_messages={
             "required": "departing from field is required",
@@ -14,7 +12,6 @@ class FlightsSerializer(serializers.ModelSerializer):
         }
     )
     destination = serializers.CharField(
-        validators=[validate_field_type('string')],
         required=True,
         error_messages={
             "required": "destination field is required",
@@ -22,32 +19,48 @@ class FlightsSerializer(serializers.ModelSerializer):
         }
     )
     date_of_departure = serializers.DateField(
-        validators=[validate_field_type('date')],
         required=True,
         error_messages={
-            "required": "date of depature field is required",
-            "blank": "date of depature field cannot be left blank"
+            "required": "date of departure field is required",
+            "blank": "date of departure field cannot be left blank"
         }
     )
     departure_time = serializers.TimeField(
-        validators=[validate_field_type('time')],
         required=True,
         error_messages={
-            "required": "depature time field is required",
-            "blank": "depature time field cannot be left blank"
+            "required": "departure time field is required",
+            "blank": "departure time field cannot be left blank"
         }
     )
     fee = serializers.IntegerField(
-        validators=[validate_field_type('integer')],
         required=True,
         error_messages={
             "required": "fee field is required",
             "blank": "fee field cannot be left blank"
         }
     )
+    
+    def validate(self, data):
+        """
+        Function checks if a flight exists
+        
+        args: 
+            data: data containing information for flight to create 
+        
+        returns:
+            Error if a flight given already exists
+        """
+        data = dict(data)
+        flight = Flights.objects.filter(departing_from=data['departing_from'],
+                                        destination=data['destination'],
+                                        date_of_departure=data['date_of_departure'],
+                                        departure_time=data['departure_time'])
+        if flight.exists():
+            raise serializers.ValidationError(f"flight already exists")
+        return data
 
     class Meta:
         model = Flights
-        
-        fields = ['departing_from', 'destination', 'date_of_departure',
-                  'depature_time', 'fee']
+
+        fields = ['departure_time', 'departing_from', 'destination', 'date_of_departure',
+                   'fee', 'id']
