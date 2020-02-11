@@ -17,6 +17,7 @@ class SignupUser(CreateAPIView):
     view class for signing up a new user with the normal
     user role
     """
+    authentication_classes = ()
     serializer_class = SignupUserSerializer
     
     def create(self, request):
@@ -47,6 +48,7 @@ class SignupAdmin(CreateAPIView):
     """
     View class for creating users with the admin role
     """
+    authentication_classes = ()
     serializer_class = SignupAdminSerializer
     
     def create(self, request):
