@@ -10,4 +10,7 @@ air_reserve/apps/bookings/__pycache__/
 air_reserve/apps/authentication/migrations/__pycache__/
 air_reserve/apps/flights/migrations/__pycache__/
 air_reserve/apps/bookings/migrations/__pycache__/
+air_reserve/apps/bookings/bookings_tests/__pycache__/
+air_reserve/apps/authentication/authentication_tests/__pycache__/
+air_reserve/apps/flights/flights_tests/__pycache__/
 .env
