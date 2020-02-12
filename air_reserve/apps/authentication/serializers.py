@@ -22,6 +22,7 @@ class BaseSignupSerializer(serializers.ModelSerializer):
         error_messages={
             "required": "firstname field is required",
             "blank": "firstname field cannot be left blank",
+            "min_length": "firstname should be atleast 3 characters long"
         }
     )
     last_name = serializers.CharField(
@@ -51,6 +52,7 @@ class BaseSignupSerializer(serializers.ModelSerializer):
         error_messages={
             "required": "password field is required",
             "blank": "password field cannot be left blank",
+            "min_length": "password should atleast be 8 characters."
         }
     )
 
