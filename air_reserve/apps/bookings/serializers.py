@@ -9,4 +9,4 @@ class BookingsSerializer(serializers.ModelSerializer):
         model = Bookings
         
         fields = ['user', 'flight', 'booking_cancelled',
-                  'booked_at', 'updated_at']
+                  'booked_at', 'updated_at', 'id']
